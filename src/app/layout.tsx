@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ConvexClientProvider } from "./convex-client-provider";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,7 +15,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ConvexClientProvider>{children}</ConvexClientProvider>
+        <ClerkProvider dynamic>
+          <ConvexClientProvider>{children}</ConvexClientProvider>
+        </ClerkProvider>
+        
       </body>
     </html>
     
