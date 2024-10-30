@@ -20,7 +20,7 @@ export default function Home() {
   };
 
   return (
-    <><Authenticated>
+    
       <div>
         {messages?.map((message, index) => (
           <div key={index}>
@@ -38,8 +38,6 @@ export default function Home() {
           <button type="submit">Send</button>
         </form>
       </div>
-    </Authenticated><Unauthenticated>
-        <SignInButton />
-      </Unauthenticated></>
+    
   );
 }
