@@ -32,27 +32,21 @@ export function AcceptedFriendsList() {
         <FriendItem key={index} username={user.username} image={user.image}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                className="rounded-full bg-blue-100"
-                variant="outline"
-                size="icon"
-              >
-                <MessageCircleIcon />
-                <span className="sr-only">DM</span>
-              </Button>
+              
+              <IconButton
+            title="DM"
+            className="rounded-full bg-blue-100"
+            icon={<MessageCircleIcon />} />
             </TooltipTrigger>
             <TooltipContent>DM</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                className="rounded-full bg-red-100"
-                variant="outline"
-                size="icon"
-              >
-                <XIcon />
-                <span className="sr-only">Remove Friend</span>
-              </Button>
+              
+              <IconButton
+            title="Remove Friend"
+            className="rounded-full bg-red-100"
+            icon={<XIcon />} />
             </TooltipTrigger>
             <TooltipContent>Remove Friend</TooltipContent>
           </Tooltip>
@@ -73,22 +67,13 @@ export function PendingFriendsList() {
       )}
       {users.map((user, index) => (
         <FriendItem key={index} username={user.username} image={user.image}>
-          <Button
-            className="rounded-full bg-green-100"
-            variant="outline"
-            size="icon"
-          >
-            <CheckIcon />
-            <span className="sr-only">Accept</span>
-          </Button>
-          <Button
+          
+          <IconButton title="Accept" className="rounded-full bg-green-100" icon={<CheckIcon />} />
+          
+          <IconButton
+            title="Reject"
             className="rounded-full bg-red-100"
-            variant="outline"
-            size="icon"
-          >
-            <XIcon />
-            <span className="sr-only">Reject</span>
-          </Button>
+            icon={<XIcon />} />
         </FriendItem>
       ))}
     </div>
@@ -107,7 +92,11 @@ function IconButton({
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button className={cn("rounded-full")} variant="outline" size="icon">
+        <Button 
+        className={cn("rounded-full", className)} 
+        variant="outline" 
+        size="icon"
+        >
           {icon}
           <span className="sr-only">{title}</span>
         </Button>

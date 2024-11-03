@@ -10,20 +10,20 @@ export function AddFriend() {
             <DialogTrigger asChild>
                 <Button size="sm">Add Friend</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="bg-white">
                 <DialogHeader>
                     <DialogTitle>Add Friend</DialogTitle>
                     <DialogDescription>
                         You can add a friend by their username.
                     </DialogDescription>
                 </DialogHeader>
-                <form className="contents white">
+                <form className="contents">
                     <div className="flex flex-col gap-1">
                         <Label htmlFor="username">Username</Label>
                         <Input id="username" type="text" />
                     </div>
                     <DialogFooter>
-                        <Button>Send Friend Request</Button>
+                        <Button className="bg-black text-white">Send Friend Request</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>
