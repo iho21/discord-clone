@@ -1,8 +1,28 @@
-/* import { v } from "convex/values";
+import { v } from "convex/values";
 import { authenticatedMutation, authenticatedQuery } from "./helpers";
-import { QueryCtx, Id } from "convex/server"; // Adjust based on correct import
+import { QueryCtx } from "../_generated/server"
+import { Id } from "../_generated/dataModel"
 
+export const createFriendRequest = authenticatedMutation({
+  args: { username: v.string() },
+  handler: async (ctx, {username}) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_username", (q) => q.eq("username", username))
+      .unique();
+    if (!user) {
+      throw new Error("User not found");
+    } else if (user._id === ctx.user._id) {
+      throw new Error("Cannot add yourself");
+    }
+    await ctx.db.insert("friends", {
+      user1: ctx.user._id,
+      user2: user._id,
+      status: "pending"
 
+    });
+  },
+});
 export const listPending = authenticatedQuery({
   handler: async (ctx) => {
     const friends = await ctx.db
@@ -77,4 +97,4 @@ const mapWithUsers = async <
     })
   );
   return (await result).filter((r) => r.status === "fulfilled").map((r) => r.value);
-};   */
+};  

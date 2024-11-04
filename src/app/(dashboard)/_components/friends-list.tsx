@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { CheckIcon, MessageCircleIcon, XIcon } from "lucide-react";
@@ -11,32 +11,27 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
-const useTestUsers = () => {
-  const user = useQuery(api.functions.user.get);
-  if (!user) {
-    return [];
-  }
-  return [user];
-};
+
 
 export function AcceptedFriendsList() {
-  const users = useTestUsers();
-
+  const friends = useQuery(api.functions.friend.listAccepted);
+  const updateStatus = useMutation(api.functions.friend.updateStatus);
   return (
     <div className="flex flex-col divide-y">
       <h2 className="text-xs font-medium text-muted-foreground p-2.5">Accepted Friends</h2>
-      {users.length === 0 && (
+      {friends?.length === 0 && (
         <FriendsListEmpty>No friends yet</FriendsListEmpty>
       )}
-      {users.map((user, index) => (
-        <FriendItem key={index} username={user.username} image={user.image}>
+      {friends?.map((friend) => (
+        <FriendItem key={friend._id} username={friend.user.username} image={friend.user.image}>
           <Tooltip>
             <TooltipTrigger asChild>
               
               <IconButton
             title="DM"
             className="rounded-full bg-blue-100"
-            icon={<MessageCircleIcon />} />
+            icon={<MessageCircleIcon />} 
+            onClick={() => {}}/>
             </TooltipTrigger>
             <TooltipContent>DM</TooltipContent>
           </Tooltip>
@@ -46,7 +41,8 @@ export function AcceptedFriendsList() {
               <IconButton
             title="Remove Friend"
             className="rounded-full bg-red-100"
-            icon={<XIcon />} />
+            icon={<XIcon />} 
+            onClick={() => updateStatus({ id: friend._id, status: "rejected"})}/>
             </TooltipTrigger>
             <TooltipContent>Remove Friend</TooltipContent>
           </Tooltip>
@@ -57,23 +53,29 @@ export function AcceptedFriendsList() {
 }
 
 export function PendingFriendsList() {
-  const users = useTestUsers();
-
+  const friends = useQuery(api.functions.friend.listPending);
+  const updateStatus = useMutation(api.functions.friend.updateStatus);
   return (
     <div className="flex flex-col divide-y">
       <h2 className="text-xs font-medium text-muted-foreground p-2.5">Pending Friends</h2>
-      {users.length === 0 && (
+      {friends?.length === 0 && (
         <FriendsListEmpty>No requests</FriendsListEmpty>
       )}
-      {users.map((user, index) => (
-        <FriendItem key={index} username={user.username} image={user.image}>
+      {friends?.map((friend) => (
+        <FriendItem key={friend._id} username={friend.user.username} image={friend.user.image}>
           
-          <IconButton title="Accept" className="rounded-full bg-green-100" icon={<CheckIcon />} />
+          <IconButton 
+          title="Accept" 
+          className="rounded-full bg-green-100" 
+          icon={<CheckIcon />} 
+          onClick={() => updateStatus({id: friend._id, status:"accepted"}) }
+          />
           
           <IconButton
             title="Reject"
             className="rounded-full bg-red-100"
-            icon={<XIcon />} />
+            icon={<XIcon />} 
+            onClick={() => updateStatus({id: friend._id, status:"rejected"}) } />
         </FriendItem>
       ))}
     </div>
@@ -88,6 +90,7 @@ function IconButton({
   title: string;
   className?: string;
   icon: React.ReactNode;
+  onClick: () => void;
 }) {
   return (
     <Tooltip>
