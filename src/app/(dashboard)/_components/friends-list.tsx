@@ -86,6 +86,7 @@ function IconButton({
   title,
   className,
   icon,
+  onClick,
 }: {
   title: string;
   className?: string;
@@ -96,9 +97,10 @@ function IconButton({
     <Tooltip>
       <TooltipTrigger asChild>
         <Button 
-        className={cn("rounded-full", className)} 
-        variant="outline" 
-        size="icon"
+          className={cn("rounded-full", className)} 
+          variant="outline" 
+          size="icon"
+          onClick={onClick}
         >
           {icon}
           <span className="sr-only">{title}</span>
